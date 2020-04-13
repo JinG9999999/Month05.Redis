@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Month05.Redis.Models.ProductsModel>
+@{
+    ViewBag.Title = "Show";
+}
+
+<h1>显示</h1>
+
+@using (Html.BeginForm("Show", "Products", FormMethod.Post))
+{
+    <input name="time1" type="datetime" placeholder="时间范围" onclick="WdatePicker()" />
+    <input name="time1" type="datetime" placeholder="时间范围" onclick="WdatePicker()" />
+    <input name="name" type="text" placeholder="产品名称" />
+    <input id="Submit1" type="submit" value="查询" class=" btn btn-primary" />
+    <input id="Button1" type="button" value="添加" class=" bnt btn-success" onclick="location.href='/Products/Add/'" />
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><input id="ckAll" type="checkbox" onclick="deladd()" /></th>
+            <th>ID</th>
+            <th>品牌名称</th>
+            <th>品牌链接</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td><input class="Checkbox1" type="checkbox" /></td>
+                <td>@i.ID</td>
+                <td>@Html.DisplayFor(m => i.Pname)</td>
+                <td>@Html.DisplayFor(m => i.Purl)</td>
+                <td>@Html.DisplayFor(m => i.UpdTime)</td>
+                <td>
+                    @Html.ActionLink("修改", "Upd", new { id = i.ID })||
+                    @Html.ActionLink("删除", "Del", new { id = i.ID })
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table">
+    <tr>
+        <td><a href="javascript:;" onclick="First()">首页</a></td>
+        <td><a href="javascript:;" onclick="Prev()">上一页</a></td>
+        <td><a href="javascript:;" onclick="Next()">下一页</a></td>
+        <td><a href="javascript:;" onclick="Last()">尾页</a></td>
+        <td>总页数：@ViewBag.totalpage 页</td>
+        <td>当前第 @ViewBag.currentpage 页 </td>
+    </tr>
+</table>
+<script>
+    function First() {
+        var p = 1;
+        location.href = "/Products/Show?currentpage=" + p;
+    }
+    function Prev() {
+        var p =@ViewBag.currentpage-1;
+         location.href = "/Products/Show?currentpage=" + p;
+    }
+    function Next() {
+        var p =@ViewBag.currentpage+1;
+         location.href = "/Products/Show?currentpage=" + p;
+    }
+    function Last() {
+        var p =@ViewBag.totalpage;
+         location.href = "/Products/Show?currentpage=" + p;
+    }
+    function delall() {
+        $(".Checkbox1:checked").checked;
+    }
+</script>
+@using (Html.BeginForm("Del", "Products"))
+    {
+        <input id="Submit1" type="submit" value="批删" />
+    }
+@section scripts{
+
+    <script src="~/Content/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+}
